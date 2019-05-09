@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-const baseApi = 'https://api.github.com/'
+const baseURL = 'https://api.github.com/'
 // const baseUrl = `${baseApi}/repos`
 
 export default axios.create({
-  baseApi,
+  baseURL,
   // additional requests api dependant
-  headers: {'Basic': 'hash'}
+  headers: {'Authorization': 'Bearer d79a713600d5c8e60b8359f3e6926780a89f6893'}
 })

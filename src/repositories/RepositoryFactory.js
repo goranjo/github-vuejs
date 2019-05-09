@@ -1,4 +1,4 @@
-import gitHubRepository from './gitHubService'
+import gitHubRepository from './userRepository'
 
 const repositories = {
   gitHub: gitHubRepository

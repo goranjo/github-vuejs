@@ -1,59 +1,61 @@
 <template>
-  <div class="hello">
+  <div class="home">
+    <img src="../assets/logo-gh.png">
     <h1>{{ msg }}</h1>
     <h2>Search a user</h2>
-      <input type="text" v-model="username" @keyup.enter="enterUser()" >
-  <users-list-list
+      <input type="text" v-model="username" v-on:keyup="enterUser" class="form-control">
+  <user-list
           v-if="!isLoading"
           :users="computedUsers"
   >
     <template slot-scope="user">
-      <div class="users--item">
-        <figure class="flex items-center mb-3">
+      <div class="users-item">
+        <figure class="flex items-center">
           <figcaption>
-            <h3 class="text-base">{{user.owner.login}}</h3>
+            <router-link :to="{path: `/users/${user.login}`}">{{user.login}}</router-link>
           </figcaption>
         </figure>
-        <p class="text-grey-dark">{{user.body}}</p>
       </div>
     </template>
-  </users-list-list>
+  </user-list>
   </div>
 </template>
 
 <script>
 import UserList from './UserList'
 import {RepositoryFactory} from '../repositories/RepositoryFactory'
-const GitRepo = RepositoryFactory.get('gitHub')
-console.log(GitRepo)
+// import gitJson from '../repositories/test.json'
+const GitUser = RepositoryFactory.get('gitHub')
+
 export default {
+  // json: gitJson,
   name: 'Home',
   components: { UserList },
   data () {
     return {
       isLoading: false,
       users: [],
-      username: '',
+      username: 'goranjo',
       msg: 'Search the GitHub <3'
     }
   },
-  created () {
-    this.fetch()
+  mounted () {
+    this.enterUser()
   },
-  // watch: {
-  //   usering: function () {
-  //     console.log(this.username)
-  //   }
-  // },
   methods: {
-    enterUser: function() {
-      return this.username
-    },
-    async fetch () {
+    // add the debounce function Goraneee!!!
+    enterUser () {
       this.isLoading = true
-      const {data} = await GitRepo.getUser(this.enterUser())
-      this.isLoading = false
+      let data = []
+
+      GitUser.getUsers(this.username).then(function (userResults) {
+        userResults.data.items.filter(function (value) {
+          return data.push(value)
+        })
+      })
+
       this.users = data
+      this.isLoading = false
     }
   },
   computed: {

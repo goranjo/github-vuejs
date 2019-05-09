@@ -1,19 +1,19 @@
 <template>
-    <div class="posts--list">
+    <div class="user-list">
         <div
-                class="shut-your-mouth"
+                class="userlists"
                 v-for="user in users"
                 v-bind="{user}"
                 :key="user.id"
         >
-            <slot v-bind="post"></slot>
+            <slot v-bind="user"></slot>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-  name: 'users-list',
+  name: 'user-list',
   props: {
     users: {
       type: Array,
